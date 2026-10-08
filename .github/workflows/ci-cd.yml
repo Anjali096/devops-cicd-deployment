@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-test:
+  build-test-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,4 +28,14 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t devops-cicd-app .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/devops-cicd-app:latest .
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-cicd-app:latest
