@@ -1,3 +1,4 @@
+
 name: CI/CD Pipeline
 
 on:
@@ -20,11 +21,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
 
-      - name: Run application health check
+      - name: Run pytest unit tests
         run: |
-          python -c "from app import app; client = app.test_client(); response = client.get('/health'); assert response.status_code == 200"
+          pytest -v
 
       - name: Build Docker image
         run: |
@@ -39,3 +41,4 @@ jobs:
       - name: Push Docker image
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops-cicd-app:latest
+
