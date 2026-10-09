@@ -170,3 +170,9 @@ docker pull anjali098/devops-cicd-app:latest
 **Author:** Anjali Kumari
 
 **Repository:** [devops-cicd-deployment](https://github.com/Anjali096/devops-cicd-deployment)
+
+## CI/CD Pipeline — Successful Run
+
+The GitHub Actions workflow successfully tests the application, builds the Docker image, and publishes it to Docker Hub.
+
+![GitHub Actions pipeline success](github-actions-success.png)
