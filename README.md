@@ -9,25 +9,33 @@ This project demonstrates how to automate application testing, Docker image buil
 ## Architecture
 
 ```text
+
 Developer
-    |
-    v
+   |
+   v
 GitHub Repository
-    |
-    v
+   |
+   v
 GitHub Actions
-    |
-    +--> Install Python dependencies
-    |
-    +--> Run application health check
-    |
-    +--> Build Docker image
-    |
-    v
+   |
+   +--> Install development dependencies
+   |
+   +--> Run pytest unit tests
+   |       |
+   |       +--> Stop pipeline if tests fail
+   |
+   +--> Build Docker image
+   |
+   +--> Login to Docker Hub
+   |
+   +--> Push image with latest tag
+   |
+   v
 Docker Hub
-    |
-    v
+   |
+   v
 Pull and run container locally
+
 ```
 
 ## Tech Stack
@@ -116,15 +124,17 @@ docker start devops-app-test
 
 ## CI/CD Workflow
 
-The GitHub Actions workflow runs when code is pushed to the `main` branch.
+
+The GitHub Actions workflow runs automatically when code is pushed to the `main` branch.
 
 1. Checks out the repository.
 2. Sets up Python 3.12.
-3. Installs dependencies.
-4. Runs the Flask health-check test.
-5. Builds the Docker image.
-6. Authenticates to Docker Hub using GitHub repository secrets.
-7. Pushes the image with the `latest` tag.
+3. Installs dependencies from `requirements-dev.txt`.
+4. Runs automated pytest unit tests.
+5. Builds the Docker image only if tests pass.
+6. Authenticates to Docker Hub using GitHub Actions secrets.
+7. Publishes the Docker image with the `latest` tag.
+
 
 ### Required GitHub Secrets
 
